@@ -130,7 +130,32 @@ generate_expression_tables <- function(file_directory,metadata_list){
     out
 }
 
+generate_expression_tables_no_meta <- function(file_directory){
+    files <- list.files(file_directory,full.names = TRUE)
 
+    out <- files %>% lapply(function(file){
+        print(file)
+        data <- read_raw_file(file)
+        gemma.R:::processFile(data)
+    })
+    names(out) = basename(files)
+    out
+}
+
+generate_differential_expression_analyses_tables_no_values <- function(file_directory){
+    files <- list.files(file_directory,full.names = TRUE)
+
+    out <- files %>% lapply(function(file){
+        print(file)
+        data <- read_raw_json(file)
+        gemma.R:::processDEA(data)
+    })
+    names(out) = basename(files)
+
+    out = out[!sapply(out,is.null)]
+    out
+
+}
 
 generate_differential_expression_analyses_tables <- function(file_directory, differential_expression_values){
     files <- list.files(file_directory,full.names = TRUE)
@@ -146,6 +171,7 @@ generate_differential_expression_analyses_tables <- function(file_directory, dif
     out
 
 }
+
 
 generate_differential_expression_analyses_list <- function(file_directory){
     files <- list.files(file_directory,full.names = TRUE)
