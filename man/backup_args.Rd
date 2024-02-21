@@ -8,7 +8,7 @@
 
 \item{dataset_ids}{ids of datasets to be backed up}
 
-\item{json_directory}{path to save the raw json files. "data-raw" is default
+\item{file_directory}{path to save the raw output files. "data-raw" is default
 for easy package creation}
 
 \item{overwrite}{Boolean. Should existing files be overwritten}

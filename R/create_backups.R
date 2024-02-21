@@ -91,7 +91,7 @@ backup_differential_expression_values = function(dataset_ids,
     NULL
 }
 
-#' Backup Platforms
+#' Backup platforms
 #' @inherit backup_args description
 #' @inheritParams backup_args
 #' @export
@@ -107,6 +107,23 @@ backup_plaftorms = function(platform_ids,
     NULL
 }
 
+
+#' Backup platform annotations
+#' @inherit backup_args description
+#' @inheritParams backup_args
+#' @export
+backup_platform_annotations = function(platform_ids,
+                                       file_directory = here::here('data-raw'),
+                                       overwrite = TRUE){
+
+    dir.create(file.path(file_directory,'annotations'),showWarnings = FALSE)
+
+    platform_ids %>% lapply(function(id){
+        tryCatch(gemma.R::get_platform_annotations(id,file = file.path(file_directory,'annotations',id),overwrite = overwrite),error = function(e){NULL})
+        NULL
+    })
+    NULL
+}
 #' Backup dataset platforms
 #' @inherit backup_args description
 #' @inheritParams backup_args
@@ -135,3 +152,81 @@ backup_dataset_platforms = function(dataset_ids,
 #' @param overwrite Boolean. Should existing files be overwritten
 #'
 NULL
+
+
+#' Populate "data" directory with backed up data
+#'
+#' @export
+package_rdas = function(file_directory = here::here('data-raw'),overwrite=TRUE){
+    existing_backups = list.files(file_directory,recursive = FALSE)
+
+    if ('datasets' %in% existing_backups){
+        datasets <- generate_datasets_table(file.path(file_directory,'datasets'))
+        datasets_list <- generate_datasets_list(file.path(file_directory,'datasets'))
+
+        usethis::use_data(datasets,overwrite = overwrite)
+        usethis::use_data(datasets_list,overwrite = overwrite)
+    }
+
+
+    if('metadata' %in% existing_backups){
+        metadata <- generate_metadata_tables(file.path(file_directory,'metadata/'))
+        metadata_list <- generate_metadata_list(file.path(file_directory,'metadata/'))
+
+        usethis::use_data(metadata,overwrite = overwrite)
+        usethis::use_data(metadata_list,overwrite = overwrite)
+    }
+
+    if('expression' %in% existing_backups){
+        if('metadata' %in% existing_backups){
+            expression <- generate_expression_tables(file.path(file_directory,'expression/'),metadata_list)
+        } else{
+            warning('Metadata is not backed up with expression data, referring to Gemma API to process expression results. This is OK if you only wish to keep the rda files and discard the raw API output')
+            expression <- generate_expression_tables_no_meta(file.path(file_directory,'expression/'))
+        }
+        usethis::use_data(expression,overwrite = overwrite)
+        rm(expression)
+        gc()
+    }
+
+    if('difExpVals' %in% existing_backups){
+        differential_expression_values <- generate_differential_expression_values_tables(file.path(file_directory,'difExpVals/'))
+        usethis::use_data(differential_expression_values,overwrite = overwrite)
+    }
+
+    if('difExpAna' %in% existing_backups){
+        if('difExpVals' %in% existing_backups){
+            differential_expression_analyses <-
+                generate_differential_expression_analyses_tables(file.path(file_directory,'difExpAna/'),
+                                                                 differential_expression_values)
+        } else{
+            warning('Differential expression values are not backed up with contrast metadata, referring to Gemma API to process expression results. This is OK if you only wish to keep the rda files and discard the raw API output')
+            differential_expression_analyses = generate_differential_expression_analyses_tables_no_values(file.path(file_directory,'difExpAna/'))
+        }
+        usethis::use_data(differential_expression_analyses,overwrite = overwrite)
+        rm(differential_expression_values)
+        gc()
+    }
+
+    if('platforms' %in% existing_backups){
+        platforms = generate_platforms_table(file.path(file_directory,'platforms'))
+        platforms_list = generate_platforms_list(file.path(file_directory,'platforms'))
+
+        usethis::use_data(platforms,overwrite = overwrite)
+        usethis::use_data(platforms_list,overwrite = overwrite)
+    }
+
+    if('annotations' %in% existing_backups){
+        platform_annotations = generate_platform_annotations_table(file.path(file_directory,'annotations'))
+        usethis::use_data(platform_annotations,overwrite = overwrite)
+    }
+
+    if("dataset_platforms" %in% existing_backups){
+        dataset_plaftorms = generate_dataset_platforms_table(file.path(file_directory,'dataset_platforms'))
+        dataset_plaftorms_list = generate_dataset_platforms_list(file.path(file_directory,'dataset_platforms'))
+
+        usethis::use_data(dataset_plaftorms,overwrite = overwrite)
+        usethis::use_data(dataset_plaftorms_list,overwrite = overwrite)
+    }
+
+}

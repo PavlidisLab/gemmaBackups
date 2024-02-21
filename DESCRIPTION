@@ -20,6 +20,8 @@ Imports:
     digest,
     dplyr,
     pbapply
+Suggests:
+    devtools
 Remotes:
     PavlidisLab/gemma.R
 Depends: 
