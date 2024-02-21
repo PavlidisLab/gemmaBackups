@@ -130,7 +130,7 @@ backup_dataset_platforms = function(dataset_ids,
 #' @name backup_args
 #' @param platform_ids ids of platforms to be backed up
 #' @param dataset_ids ids of datasets to be backed up
-#' @param file_directory path to save the raw json files. "data-raw" is default
+#' @param file_directory path to save the raw output files. "data-raw" is default
 #' for easy package creation
 #' @param overwrite Boolean. Should existing files be overwritten
 #'
