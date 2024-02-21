@@ -136,6 +136,7 @@ generate_expression_tables_no_meta <- function(file_directory){
     out <- files %>% lapply(function(file){
         print(file)
         data <- read_raw_file(file)
+        dataset = basename(file)
         gemma.R:::processFile(data)
     })
     names(out) = basename(files)
