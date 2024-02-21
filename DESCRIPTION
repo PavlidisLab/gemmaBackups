@@ -18,7 +18,8 @@ Imports:
     usethis,
     assertthat,
     digest,
-    dplyr
+    dplyr,
+    pbapply
 Remotes:
     PavlidisLab/gemma.R
 Depends: 
