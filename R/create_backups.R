@@ -1,3 +1,5 @@
+#' Backup datasets
+#' @inherit backup_args description
 #' @inheritParams backup_args
 #' @export
 backup_datasets = function(dataset_ids,
@@ -13,6 +15,8 @@ backup_datasets = function(dataset_ids,
 
 }
 
+#' Backup sample metadata
+#' @inherit backup_args description
 #' @inheritParams backup_args
 #' @export
 backup_sample_metadata = function(dataset_ids,
@@ -26,6 +30,8 @@ backup_sample_metadata = function(dataset_ids,
     NULL
 }
 
+#' Backup expression data
+#' @inherit backup_args description
 #' @inheritParams backup_args
 #' @export
 backup_expression_data = function(dataset_ids,
@@ -43,6 +49,8 @@ backup_expression_data = function(dataset_ids,
     NULL
 }
 
+#' Backup differential expression contrasts
+#' @inherit backup_args description
 #' @inheritParams backup_args
 #' @export
 backup_differential_expression_contrasts = function(dataset_ids,
@@ -60,6 +68,8 @@ backup_differential_expression_contrasts = function(dataset_ids,
     NULL
 }
 
+#' Backup differential expression values
+#' @inherit backup_args description
 #' @inheritParams backup_args
 #' @export
 backup_differential_expression_values = function(dataset_ids,
@@ -81,6 +91,8 @@ backup_differential_expression_values = function(dataset_ids,
     NULL
 }
 
+#' Backup Platforms
+#' @inherit backup_args description
 #' @inheritParams backup_args
 #' @export
 backup_plaftorms = function(platform_ids,
@@ -95,6 +107,8 @@ backup_plaftorms = function(platform_ids,
     NULL
 }
 
+#' Backup dataset platforms
+#' @inherit backup_args description
 #' @inheritParams backup_args
 #' @export
 backup_dataset_platforms = function(dataset_ids,
@@ -110,6 +124,9 @@ backup_dataset_platforms = function(dataset_ids,
 
 
 #' @title backup_args
+#' @description Saves raw outputs from the gemma API to be processed
+#'
+#'
 #' @name backup_args
 #' @param platform_ids ids of platforms to be backed up
 #' @param dataset_ids ids of datasets to be backed up
