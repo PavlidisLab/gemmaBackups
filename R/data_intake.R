@@ -5,7 +5,8 @@ read_raw_json <- function(json){
 
 generate_platforms_table <- function(json_directory){
     out <- list.files(json_directory,full.names = TRUE,recursive = TRUE,include.dirs = FALSE) %>%
-        lapply(read_raw_json) %>% do.call(c,.) %>% processPlatforms()
+        lapply(read_raw_json) %>% do.call(c,.) %>% processPlatforms() %>%
+        dplyr::filter(!duplicated(platform.ID))
 }
 
 generate_platforms_list <- function(json_directory){
