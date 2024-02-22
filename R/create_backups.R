@@ -298,6 +298,7 @@ create_raw_archive = function(file_directory = here::here('data-raw'),
                recursive = TRUE,
                include.dirs = FALSE) %>%
         {.[!grepl(pattern = 'archive.',.)]} %>%
+        fs::path_rel()%>%
         tar(file.path(file_directory,'archive.tar.gz'),
             files = .,compression = 'gzip',
             tar="tar")

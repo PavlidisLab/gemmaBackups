@@ -20,7 +20,8 @@ Imports:
     digest,
     dplyr,
     pbapply,
-    pkgload
+    pkgload,
+    fs
 Suggests:
     devtools
 Remotes:
