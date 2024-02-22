@@ -11,7 +11,7 @@ backup_datasets = function(dataset_ids,
     lapply(seq(0,length(dataset_ids),100),function(offset){
         ds = dataset_ids[(offset+1):(offset+100)] %>% na.omit() %>% as.integer()
         dg = digest::digest(ds)
-        gemma.R::get_datasets_by_ids(ds, raw=TRUE,file = file.path(file_directory,'datasets',dg),overwrite = overwrite)
+        gemma.R::get_datasets_by_ids(ds,limit = 100, raw=TRUE,file = file.path(file_directory,'datasets',dg),overwrite = overwrite)
     })
 
     NULL
@@ -106,7 +106,7 @@ backup_plaftorms = function(platform_ids,
     lapply(seq(0,length(platform_ids),100),function(offset){
         ps = platform_ids[(offset+1):(offset+100)] %>% na.omit() %>% as.integer()
         dg = digest::digest(ps)
-        gemma.R::get_platforms_by_ids(ps, raw=TRUE,file = file.path(file_directory,'platforms',dg),overwrite = overwrite)
+        gemma.R::get_platforms_by_ids(ps, limit = 100,raw=TRUE,file = file.path(file_directory,'platforms',dg),overwrite = overwrite)
     })
 
     NULL
@@ -235,3 +235,5 @@ package_rdas = function(file_directory = here::here('data-raw'),overwrite=TRUE){
     }
 
 }
+
+
