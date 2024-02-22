@@ -4,6 +4,10 @@ read_raw_json <- function(json){
 
 
 generate_platforms_table <- function(json_directory){
+    # dataset and plaftorms are filtered because the hashing system
+    # allows multiple copies of the same platform and dataset to exist
+    # this is not possible for other entities since any reproduction of
+    # work will overwrite existing records
     out <- list.files(json_directory,full.names = TRUE,recursive = TRUE,include.dirs = FALSE) %>%
         lapply(read_raw_json) %>% do.call(c,.) %>% processPlatforms() %>%
         dplyr::filter(!duplicated(platform.ID))
@@ -81,6 +85,10 @@ generate_platform_annotations_table <- function(file_directory){
 
 
 generate_datasets_table <- function(json_directory){
+    # dataset and plaftorms are filtered because the hashing system
+    # allows multiple copies of the same platform and dataset to exist
+    # this is not possible for other entities since any reproduction of
+    # work will overwrite existing records
     out <- list.files(json_directory,full.names = TRUE,recursive = TRUE,include.dirs = FALSE) %>%
         lapply(read_raw_json) %>% do.call(c,.) %>% processDatasets() %>%
         dplyr::filter(!duplicated(experiment.ID))
