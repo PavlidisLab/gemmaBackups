@@ -275,7 +275,7 @@ partition_big_rdas = function(file_directory = here::here('data'),
         if(remove_origin){file.remove(file.path(file_directory,x))}
     })
 
-    if(create_loading_function){
+    if(create_loading_function && length(big_files)>0){
         package_name = pkgload::pkg_name(here::here())
         auto_add = readLines(system.file('script/load_big_data.R',package = 'gemmaBackups'))
         available = tools::file_path_sans_ext(big_files)
