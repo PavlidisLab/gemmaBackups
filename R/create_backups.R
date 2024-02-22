@@ -26,7 +26,7 @@ backup_sample_metadata = function(dataset_ids,
                                   file_directory = here::here('data-raw'),
                                   overwrite = TRUE){
 
-    dataset_ids %>% pblapply(function(id){
+    dataset_ids %>% pbapply::pblapply(function(id){
         gemma.R::get_dataset_samples(id,raw = TRUE,file = file.path(file_directory,'metadata',id),
                                      overwrite = overwrite)
     })
@@ -123,7 +123,7 @@ backup_platform_annotations = function(platform_ids,
 
     dir.create(file.path(file_directory,'annotations'),recursive = TRUE,showWarnings = FALSE)
 
-    platform_ids %>% pblapply(function(id){
+    platform_ids %>% pbapply::pblapply(function(id){
         tryCatch(gemma.R::get_platform_annotations(id,file = file.path(file_directory,'annotations',id),overwrite = overwrite),error = function(e){NULL})
         NULL
     })
@@ -236,4 +236,18 @@ package_rdas = function(file_directory = here::here('data-raw'),overwrite=TRUE){
 
 }
 
+#' Partition large RDS
+#'
+#' This function partitions large RDS files into smaller pieces.
+#'
+#' @export
+partition_big_rdas = function(file_directory = here::here('data'),
+                              output_directory = here::here('inst/big_data'),
+                              limit = 1e+8){
+
+    all_data <- list.files(file_directory,full.names = TRUE)
+
+
+
+}
 
