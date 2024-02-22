@@ -1,6 +1,6 @@
 #' @export
 load_big_data = function(package_name, load = 'all',envir = parent.frame()){
-    data_path = system.file('big_data',package = package_name)
+    data_path = pkgload:::shim_system.file('big_data',package = package_name)
 
     available = list.files(data_path)
 
