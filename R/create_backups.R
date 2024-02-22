@@ -83,7 +83,7 @@ backup_differential_expression_values = function(dataset_ids,
         diffs <- gemma.R::get_dataset_differential_expression_analyses(id,raw = TRUE)
         resultSet <- diffs %>% purrr::map('resultSets') %>% purrr::map(function(x){x %>% purrr::map('id')}) %>% unlist %>% unique
 
-        dir.create(file.path(file_directory,'difExpVals',id),recursive = TRUE)
+        dir.create(file.path(file_directory,'difExpVals',id),recursive = TRUE,showWarnings = FALSE)
         lapply(resultSet,function(x){
             gemma.R:::.getResultSets(x,raw = TRUE,
                            file = file.path(file_directory,'difExpVals',id,x),overwrite = overwrite)
@@ -121,7 +121,7 @@ backup_platform_annotations = function(platform_ids,
                                        file_directory = here::here('data-raw'),
                                        overwrite = TRUE){
 
-    dir.create(file.path(file_directory,'annotations'),showWarnings = FALSE)
+    dir.create(file.path(file_directory,'annotations'),recursive = TRUE,showWarnings = FALSE)
 
     platform_ids %>% lapply(function(id){
         tryCatch(gemma.R::get_platform_annotations(id,file = file.path(file_directory,'annotations',id),overwrite = overwrite),error = function(e){NULL})
