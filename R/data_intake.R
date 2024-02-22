@@ -225,11 +225,11 @@ split_file <- function(file,size,file_name_root){
     digit_count = piece_count %>% nchar
 
 
-    dir.create(dirname(paste0(file_name_root,piece_count)),recursive = TRUE,showWarnings = FALSE)
+    dir.create(file.path(file_name_root),recursive = TRUE,showWarnings = FALSE)
 
     seq_len(piece_count) %>% lapply(function(i){
         part <- readBin(con,what='raw',n=size)
-        writeBin(part,paste0(file_name_root,formatC(i,width = digit_count,flag='0')))
+        writeBin(part,file.path(file_name_root,formatC(i,width = digit_count,flag='0')))
     })
     close(con)
 }
