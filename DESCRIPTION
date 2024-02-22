@@ -19,7 +19,8 @@ Imports:
     assertthat,
     digest,
     dplyr,
-    pbapply
+    pbapply,
+    pkgload
 Suggests:
     devtools
 Remotes:
