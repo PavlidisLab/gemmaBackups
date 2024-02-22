@@ -6,11 +6,14 @@ backup_datasets = function(dataset_ids,
                            file_directory = here::here('data-raw'),
                            overwrite = TRUE){
 
-    dg = digest::digest(dataset_ids)
 
-    datasets_list = gemma.R::get_datasets_by_ids(dataset_ids, raw=TRUE) %>%
-        gemma.R::get_all_pages(binder = c,
-                               directory = file.path(file_directory,'datasets',dg),overwrite = overwrite)
+    # url length limit prevents us from calling all ids at once
+    lapply(seq(0,length(dataset_ids),100),function(offset){
+        ds = dataset_ids[(offset+1):(offset+100)] %>% na.omit() %>% as.integer()
+        dg = digest::digest(ds)
+        gemma.R::get_datasets_by_ids(ds, raw=TRUE,file = file.path(file_directory,'datasets',dg),overwrite = overwrite)
+    })
+
     NULL
 
 }
@@ -99,11 +102,13 @@ backup_plaftorms = function(platform_ids,
                             file_directory = here::here('data-raw'),
                             overwrite = TRUE){
 
-    dg = digest::digest(platform_ids)
-    platforms_to_backup <- gemma.R::get_platforms_by_ids(platform_ids,
-                                                raw = TRUE) %>%
-        gemma.R::get_all_pages(binder = c, directory = file.path(file_directory,'platforms',dg),
-                      overwrite = overwrite)
+
+    lapply(seq(0,length(platform_ids),100),function(offset){
+        ps = platform_ids[(offset+1):(offset+100)] %>% na.omit() %>% as.integer()
+        dg = digest::digest(ps)
+        gemma.R::get_platforms_by_ids(ps, raw=TRUE,file = file.path(file_directory,'platforms',dg),overwrite = overwrite)
+    })
+
     NULL
 }
 
