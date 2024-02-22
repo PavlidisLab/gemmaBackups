@@ -26,7 +26,7 @@ backup_sample_metadata = function(dataset_ids,
                                   file_directory = here::here('data-raw'),
                                   overwrite = TRUE){
 
-    dataset_ids %>% lapply(function(id){
+    dataset_ids %>% pblapply(function(id){
         gemma.R::get_dataset_samples(id,raw = TRUE,file = file.path(file_directory,'metadata',id),
                                      overwrite = overwrite)
     })
@@ -123,7 +123,7 @@ backup_platform_annotations = function(platform_ids,
 
     dir.create(file.path(file_directory,'annotations'),recursive = TRUE,showWarnings = FALSE)
 
-    platform_ids %>% lapply(function(id){
+    platform_ids %>% pblapply(function(id){
         tryCatch(gemma.R::get_platform_annotations(id,file = file.path(file_directory,'annotations',id),overwrite = overwrite),error = function(e){NULL})
         NULL
     })
