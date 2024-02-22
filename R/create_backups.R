@@ -288,3 +288,21 @@ partition_big_rdas = function(file_directory = here::here('data'),
     NULL
 }
 
+#' Zip raw data and create partitioned files
+#'
+#' @export
+create_raw_archive = function(file_directory = here::here('data-raw'),
+                              limit = 1e+8){
+
+    list.files(file_directory,full.names = TRUE,
+               recursive = TRUE,
+               include.dirs = FALSE) %>%
+        {.[grepl(pattern = '(?<!archive).',.,perl = TRUE)]} %>%
+        tar(file.path(file_directory,'archive.tar.gz'),
+            files = .,compression = 'gzip',
+            tar="tar")
+
+    split_file(file = file.path(file_directory,'archive.tar.gz'),
+               size = 1e+8,
+               file_name_root =  file.path(file_directory,'archive'))
+}
