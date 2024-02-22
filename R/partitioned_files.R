@@ -13,7 +13,7 @@ load_big_data = function(package_name, load = 'all',envir = parent.frame()){
 
 
 
-
+#' @export
 split_file <- function(file,size,file_name_root){
     con = file(file,raw=TRUE,open = 'rb')
     info = file.info(file)
@@ -44,6 +44,7 @@ load_split_rds <- function(split_dir,envir = parent.frame()){
     load(tmp,envir = envir)
 }
 
+#' @export
 untar_split_tar <- function(split_dir,path){
     files <- list.files(split_dir,full.names = TRUE)
     merged <- files %>% lapply(function(x){
@@ -57,4 +58,6 @@ untar_split_tar <- function(split_dir,path){
     untar(tmp,exdir = path)
 
 }
+
+
 
