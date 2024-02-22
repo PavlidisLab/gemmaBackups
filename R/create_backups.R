@@ -239,15 +239,29 @@ package_rdas = function(file_directory = here::here('data-raw'),overwrite=TRUE){
 #' Partition large RDS
 #'
 #' This function partitions large RDS files into smaller pieces.
+#' @param file_directory Path to all rda files
+#' @param output_directory Path to partitioned files
+#' @param limit Size limit for files and partitions
 #'
 #' @export
 partition_big_rdas = function(file_directory = here::here('data'),
                               output_directory = here::here('inst/big_data'),
-                              limit = 1e+8){
+                              limit = 1e+8,
+                              remove_origin = TRUE){
 
     all_data <- list.files(file_directory,full.names = TRUE)
 
+    data_info <- all_data %>% sapply(file.info)
+    big_files <- which(data_info['size',] > limit) %>% names
 
+    big_files %>% lapply(function(x){
+        print(x)
+        split_file(file = x,
+                   size = limit,
+                   file_name_root = file.path(output_directory,x))
+        if(remove_origin){file.remove(x)}
+    })
 
+    NULL
 }
 
