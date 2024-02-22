@@ -32,13 +32,16 @@ backup_all =function(dataset_ids,
         backup_expression_data(dataset_ids,file_directory,overwrite)
     }
     if (dif_exp_contrasts){
+        print('downloading contrast data')
         backup_differential_expression_contrasts(dataset_ids,file_directory,overwrite)
     }
     if(dif_exp_values){
+        print('downloading differential expression values data')
         backup_differential_expression_values(dataset_ids,file_directory,overwrite)
     }
 
     if(platforms){
+        print('downloading platform data')
         pf = backup_dataset_platforms(dataset_ids,file_directory,overwrite)
         backup_plaftorms(pf$platform.ID,file_directory,overwrite)
         backup_platform_annotations(pf$platform.ID,file_directory,overwrite)
